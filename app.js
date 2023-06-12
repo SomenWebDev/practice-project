@@ -1,7 +1,7 @@
 // Basic
 
 const express = require("express");
-const apiRouter = require("./src/routes/api");
+const router = require("./src/routes/api");
 
 const app = express();
 
@@ -48,6 +48,7 @@ mongoose
   .connect("mongodb://127.0.0.1:27017/ToDo", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    autoIndex: true,
   })
   .then(() => {
     console.log("Connected to the database.");
@@ -58,7 +59,7 @@ mongoose
 
 // routing implement
 
-app.use("/api/v1", apiRouter);
+app.use("/api/v1", router);
 
 app.use("*", (req, res) => {
   res.status(404).json({ status: "failed", data: "Not Found" });
