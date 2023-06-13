@@ -103,3 +103,20 @@ exports.SelectProfile = async (req, res) => {
     res.status(400).json({ status: "Failed", data: err });
   }
 };
+
+exports.UpdateProfile = async (req, res) => {
+  try {
+    let UserName = req.headers["username"];
+    let reqBody = req.body;
+
+    const updatedProfile = await ProfileModel.updateOne(
+      { UserName: UserName },
+      { $set: reqBody },
+      { upsert: true }
+    );
+
+    res.status(201).json({ status: "success", data: updatedProfile });
+  } catch (err) {
+    res.status(400).json({ status: "Failed", data: err });
+  }
+};
