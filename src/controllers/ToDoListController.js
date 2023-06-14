@@ -57,3 +57,33 @@ exports.UpdateToDo = async (req, res) => {
     res.status(400).json({ status: "Failed", data: err });
   }
 };
+
+exports.UpdateStatusToDo = async (req, res) => {
+  try {
+    let TodoStatus = req.body["TodoStatus"];
+    let _id = req.body["_id"];
+    let TodoUpdateDate = Date.now();
+    let PostBody = {
+      TodoStatus: TodoStatus,
+      TodoUpdateDate: TodoUpdateDate,
+    };
+    const updatedStatusToDo = await ToDoListModel.updateOne(
+      { _id: _id },
+      { $set: PostBody },
+      { upsert: true }
+    );
+    res.status(201).json({ status: "success", data: updatedStatusToDo });
+  } catch (err) {
+    res.status(400).json({ status: "Failed", data: err });
+  }
+};
+
+exports.RemoveToDo = async (req, res) => {
+  try {
+    let _id = req.body["_id"];
+    const deleted = await ToDoListModel.deleteOne({ _id: _id });
+    res.status(201).json({ status: "success", data: deleted });
+  } catch (err) {
+    res.status(400).json({ status: "Failed", data: err });
+  }
+};
