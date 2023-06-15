@@ -29,4 +29,15 @@ router.post(
 );
 router.post("/RemoveToDo", AuthVerifyMiddleware, ToDoListController.RemoveToDo);
 
+router.post(
+  "/SelectToDoByStatus",
+  AuthVerifyMiddleware,
+  ToDoListController.SelectToDoByStatus
+);
+router.post(
+  "/SelectToDoByDate",
+  AuthVerifyMiddleware,
+  ToDoListController.SelectToDoByDate
+);
+
 module.exports = router;

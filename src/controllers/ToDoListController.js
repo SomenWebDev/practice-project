@@ -87,3 +87,40 @@ exports.RemoveToDo = async (req, res) => {
     res.status(400).json({ status: "Failed", data: err });
   }
 };
+
+exports.SelectToDoByStatus = async (req, res) => {
+  try {
+    let UserName = req.headers["username"];
+    console.log(req);
+    let TodoStatus = req.body["TodoStatus"];
+
+    // Find and update all to-do items matching the given username and status
+    const updatedStatus = await ToDoListModel.find({
+      UserName: UserName,
+      TodoStatus: TodoStatus,
+    });
+
+    res.status(200).json({ status: "success", data: updatedStatus });
+  } catch (err) {
+    res.status(400).json({ status: "failed", data: err });
+  }
+};
+
+exports.SelectToDoByDate = async (req, res) => {
+  try {
+    let UserName = req.headers["username"];
+    let FormDate = req.body["FormDate"];
+    let ToDate = req.body["ToDate"];
+
+    const selectedDate = await ToDoListModel.find({
+      UserName: UserName,
+      TodoDate: {
+        $gte: new Date(FormDate),
+        $lte: new Date(ToDate),
+      },
+    });
+    res.status(200).json({ status: "success", data: selectedDate });
+  } catch (err) {
+    res.status(400).json({ status: "failed", data: err });
+  }
+};
